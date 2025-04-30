@@ -12,15 +12,15 @@ local redzlib = {
 	Themes = {
 		Darker = {
 			["Color Hub 1"] = ColorSequence.new({
-				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(89, 45, 0)),
-				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 120, 0)),
-				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(89, 45, 0))
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)),
+				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(60, 60, 60)),
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
 			}),
-			["Color Hub 2"] = Color3.fromRGB(60, 30, 0),
-			["Color Stroke"] = Color3.fromRGB(180, 85, 0),
-			["Color Theme"] = Color3.fromRGB(255, 140, 0),
-			["Color Text"] = Color3.fromRGB(255, 235, 200),
-			["Color Dark Text"] = Color3.fromRGB(200, 150, 100)
+			["Color Hub 2"] = Color3.fromRGB(20, 20, 20),
+			["Color Stroke"] = Color3.fromRGB(100, 100, 100),
+			["Color Theme"] = Color3.fromRGB(255, 255, 255),
+			["Color Text"] = Color3.fromRGB(230, 230, 230),
+			["Color Dark Text"] = Color3.fromRGB(150, 150, 150)
 		},
 		Dark = {
 			["Color Hub 1"] = ColorSequence.new({
@@ -1580,8 +1580,8 @@ function redzlib:MakeWindow(Configs)
 	local Window, FirstTab = {}, false
 	function Window:CloseBtn()
 		local Dialog = Window:Dialog({
-			Title = "Shnmaxhub",
-			Text = "Quer Fechar O Shnmaxhub?",
+			Title = "Alpha Hub 👺",
+			Text = "Quer Fechar o Alpha hub?",
 			Options = {
 				{"Sim", function()
 					ScreenGui:Destroy()

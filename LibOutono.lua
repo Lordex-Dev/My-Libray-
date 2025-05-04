@@ -12,15 +12,15 @@ local redzlib = {
 	Themes = {
 		Darker = {
 			["Color Hub 1"] = ColorSequence.new({
-				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)),
-				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(60, 60, 60)),
-				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 240, 245)),
+				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 255, 255)),
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 240, 245))
 			}),
-			["Color Hub 2"] = Color3.fromRGB(20, 20, 20),
-			["Color Stroke"] = Color3.fromRGB(100, 100, 100),
+			["Color Hub 2"] = Color3.fromRGB(255, 228, 235),
+			["Color Stroke"] = Color3.fromRGB(255, 182, 193),
 			["Color Theme"] = Color3.fromRGB(255, 255, 255),
-			["Color Text"] = Color3.fromRGB(230, 230, 230),
-			["Color Dark Text"] = Color3.fromRGB(150, 150, 150)
+			["Color Text"] = Color3.fromRGB(255, 182, 193),
+			["Color Dark Text"] = Color3.fromRGB(200, 150, 160)
 		},
 		Dark = {
 			["Color Hub 1"] = ColorSequence.new({
@@ -1580,8 +1580,8 @@ function redzlib:MakeWindow(Configs)
 	local Window, FirstTab = {}, false
 	function Window:CloseBtn()
 		local Dialog = Window:Dialog({
-			Title = "Alpha Hub 👺",
-			Text = "Quer Fechar o Alpha hub?",
+			Title = "Aplha Kawai",
+			Text = "Quer Fechar o Alpha Kawai?",
 			Options = {
 				{"Sim", function()
 					ScreenGui:Destroy()

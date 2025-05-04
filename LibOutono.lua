@@ -1580,7 +1580,7 @@ function redzlib:MakeWindow(Configs)
 	local Window, FirstTab = {}, false
 	function Window:CloseBtn()
 		local Dialog = Window:Dialog({
-			Title = "Aplha Hub 👺",
+			Title = "Alpha Hub 👺",
 			Text = "Quer Fechar o Alpha Hub?",
 			Options = {
 				{"Sim", function()

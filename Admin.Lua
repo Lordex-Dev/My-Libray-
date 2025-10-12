@@ -1,40 +1,127 @@
 -- // LocalScript (StarterPlayerScripts)
+
+-- // Serviços
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
 local TextChatService = game:GetService("TextChatService")
+local RunService = game:GetService("RunService")
 
--- Prefixos permitidos
+-- // Configurações
 local COMMAND_PREFIXES = {"?", ";", ":", "!"}
 local MAX_ARGS = 20
-local frozen = false
+local ADMIN_NAMES = {"inscritos105", "ins", "insc", "inscri", "inscr", "inscritos"} -- abreviações possíveis
 
--- // Funções gerais
-local function isCommand(message, cmd)
-	local messageLower = message:lower()
+-- // Função de enviar mensagem no chat
+local function sendMessage(message)
+	local chatChannel = TextChatService.TextChannels:FindFirstChild("RBXGeneral")
+	if chatChannel then
+		chatChannel:SendAsync(message)
+	else
+		warn("Erro ao enviar mensagem.")
+	end
+end
+
+-- // Identificação do chatlogger
+local function identifyCommand(message)
 	for _, prefix in ipairs(COMMAND_PREFIXES) do
-		local command = prefix .. cmd:lower()
-		if messageLower:sub(1, #command) == command then
+		if message:lower():sub(1, #prefix) == prefix then
 			return true
 		end
 	end
 	return false
 end
 
-local function isTargetName(messageWord, myName)
-	myName = myName:lower()
-	return myName:sub(1, #messageWord:lower()) == messageWord:lower()
-end
-
-local function sendMessage(message)
-	local chatChannel = TextChatService.TextChannels:FindFirstChild("RBXGeneral")
-	if chatChannel then
-		chatChannel:SendAsync(message)
-	else
-		warn("Erro ao enviar mensagem no chat.")
+-- // Obter jogador pelo nome ou parte dele
+local function getPlayerByPartialName(partial)
+	if not partial then return end
+	partial = partial:lower()
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player.Name:lower():sub(1, #partial) == partial then
+			return player
+		end
 	end
 end
 
+-- // Comandos principais
+local function executeCommand(message)
+	if not identifyCommand(message) then return end
+
+	local args = string.split(message, " ")
+	if #args == 0 then return end
+
+	local prefix = string.sub(args[1], 1, 1)
+	local command = string.sub(args[1], 2):lower()
+	table.remove(args, 1)
+
+	local targetName = args[1] and args[1]:lower()
+	local phrase = table.concat(args, " ", 2)
+	local targetPlayer = getPlayerByPartialName(targetName)
+
+	-- Identifica se o alvo é o dono
+	local isTargetAdmin = false
+	for _, name in ipairs(ADMIN_NAMES) do
+		if targetName == name then
+			isTargetAdmin = true
+			break
+		end
+	end
+
+	-- // Comando SAY / CHAT
+	if (command == "say" or command == "chat") and isTargetAdmin then
+		if phrase ~= "" then
+			sendMessage(phrase) -- mantém maiúsculas/minúsculas
+		end
+
+	-- // KICK
+	elseif command == "kick" and targetPlayer then
+		targetPlayer:Kick("Você foi expulso pelo administrador.")
+
+	-- // FREEZE
+	elseif command == "freeze" and targetPlayer then
+		local character = targetPlayer.Character
+		if character then
+			for _, part in ipairs(character:GetDescendants()) do
+				if part:IsA("BasePart") then
+					part.Anchored = true
+				end
+			end
+		end
+
+	-- // UNFREEZE
+	elseif command == "unfreeze" and targetPlayer then
+		local character = targetPlayer.Character
+		if character then
+			for _, part in ipairs(character:GetDescendants()) do
+				if part:IsA("BasePart") then
+					part.Anchored = false
+				end
+			end
+		end
+
+	-- // BRING
+	elseif command == "bring" and targetPlayer then
+		local targetChar = targetPlayer.Character
+		local myChar = LocalPlayer.Character
+		if targetChar and myChar and myChar:FindFirstChild("HumanoidRootPart") then
+			targetChar:MoveTo(myChar.HumanoidRootPart.Position + Vector3.new(2, 0, 0))
+		end
+
+	-- // CRASH (simulação)
+	elseif command == "crash" and targetPlayer then
+		while true do end -- simula travamento local (não recomendado em jogos públicos)
+	end
+end
+
+-- // Escuta o chatlogger
+TextChatService.MessageReceived:Connect(function(message)
+	local text = message.Text
+	local author = message.TextSource and message.TextSource.Name or ""
+
+	-- Ignora as próprias mensagens
+	if author == LocalPlayer.Name then return end
+
+	executeCommand(text)
+end)
 -- // Ações
 local function resetCharacter()
 	if LocalPlayer.Character then
